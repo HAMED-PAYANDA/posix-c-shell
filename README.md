@@ -1,5 +1,5 @@
 # Custom Command-Line Shell (myshell)
-#### Video Demo:  <INSERT_YOUTUBE_URL_HERE>
+#### Video Demo:  <[INSERT_YOUTUBE_URL_HERE](https://www.youtube.com/watch?v=pWYWXD3LPuw)>
 #### Description:
 
 This project is a custom UNIX-style command-line shell written entirely in C. It serves as my final capstone project for CS50x. The shell implements a complete Read-Evaluate-Print-Loop (REPL), dynamic input tokenization, and system-level process management using POSIX standard system calls.
