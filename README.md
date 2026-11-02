@@ -24,6 +24,8 @@ Here is a look at the custom shell in action:
 *Demonstrates compilation via GNU Make, executing standard system commands, managing directories, and gracefully terminating without memory leaks.*[cite: 2]
 ![myshell Terminal Demonstration](demo1.png)
 
+#### Video Demo: <https://www.youtube.com/watch?v=pWYWXD3LPuw>
+
 ---
 
 ## 🏗️ Architecture Diagram
