@@ -3,3 +3,4 @@ myshell
 
 # macOS custom folder attributes
 .DS_Store
+*.docx
