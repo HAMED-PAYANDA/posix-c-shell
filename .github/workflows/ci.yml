@@ -1,0 +1,26 @@
+name: C Build and Test CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout codebase
+      uses: actions/checkout@v4
+
+    - name: Compile the shell
+      run: make
+
+    - name: Verify executable creation
+      run: test -f myshell
+
+    - name: Basic execution test
+      # Pipes the 'exit' command into the shell to ensure it launches and closes without crashing
+      run: echo "exit" | ./myshell
+      
