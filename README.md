@@ -1,89 +1,143 @@
-# myshell: POSIX-Compliant Command-Line Interface
+# 🐚 myshell: POSIX-Compliant Command-Line Interface
 
-![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
-![CS50x](https://img.shields.io/badge/CS50x-Harvard_University-A51C30?style=for-the-badge)
-![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
+[![CS50x Certification](https://img.shields.io/badge/Harvard-CS50x-A51C30?style=flat&logo=harvard)](https://cs50.harvard.edu/x/)
+![C Version](https://img.shields.io/badge/C-11%2FPOSIX.1--2008-blue?logo=c)
+![macOS](https://img.shields.io/badge/OS-macOS%20%7C%20Linux-000000?logo=apple)
+![GCC](https://img.shields.io/badge/Compiler-GCC-A42E2B?logo=gnu)
+![Make](https://img.shields.io/badge/Build-GNU_Make-0A0A0A?logo=gnu)
+![CI/CD](https://img.shields.io/badge/Build-Passing-brightgreen?logo=githubactions)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Harvard CS50x Capstone](https://img.shields.io/badge/Harvard-CS50x%20Capstone-A51C30?style=flat)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=flat)
 
-## 📖 Project Overview
+## Overview
 
-`myshell` is a custom UNIX-style command-line shell written entirely in C. Developed as a capstone project for Harvard's CS50x, it implements a complete Read-Evaluate-Print-Loop (REPL), dynamic input tokenization, and system-level process management utilizing standard POSIX system calls. 
+This project provides a custom UNIX-style command-line shell written entirely in C. Developed as a capstone project for Harvard's CS50x, it implements a complete Read-Evaluate-Print-Loop (REPL), dynamic input tokenization, and system-level process management. The application features a robust execution pipeline utilizing standard POSIX system calls to manage process concurrency, directory navigation, and external program execution without crashing the parent environment. Additionally, the suite includes automated compilation and testing via a custom Makefile and continuous integration pipeline.
 
-This project explores the architecture of bare-metal operating system interactions, specifically focusing on dynamic memory allocation, pointer arithmetic, and process concurrency (`fork()`, `execvp()`, `wait()`).
+---
 
-## 🖥️ Visual Proof
+## 📸 Visual Proof & Demos
 
-Below is a demonstration of `myshell` compiling via `make`, executing standard system commands, managing directories, and gracefully terminating[cite: 2]:
+Here is a look at the custom shell in action:
 
-#### Video Demo: <https://www.youtube.com/watch?v=pWYWXD3LPuw>
-
+### 1. Terminal Execution & Process Management
+*Demonstrates compilation via GNU Make, executing standard system commands, managing directories, and gracefully terminating without memory leaks.*[cite: 2]
 ![myshell Terminal Demonstration](demo1.png)
 
-## ⚙️ Core Tech Stack
-
-*   **Language:** C (Standard: C11 / POSIX.1-2008)
-*   **Compiler:** GCC (GNU Compiler Collection)
-*   **Build System:** GNU Make
-*   **Environment:** macOS / Linux (POSIX-compliant systems)
-
-## ✨ Key Features
-
-*   **Custom REPL:** A robust Read-Evaluate-Print-Loop that dynamically allocates memory for user input of any length.
-*   **Process Forking:** Utilizes `fork()` and `execvp()` to execute external system programs (like `ls`, `mkdir`, `pwd`) in child processes without crashing the parent shell.
-*   **Built-in Commands:** Intercepts specific commands like `cd` (utilizing `chdir()`) and `exit` to run directly within the parent process.
-*   **Memory Safety:** Strict cleanup routines using `free()` to prevent memory leaks during execution and upon termination.
+---
 
 ## 🏗️ Architecture Diagram
 
-The following workflow illustrates how `myshell` processes a command from input to execution:
+The application suite follows a modular architecture, utilizing distinct C files to separate the REPL logic, lexical analysis, and low-level system call execution. 
 
 ```mermaid
 graph TD
-    A[User Types Command] -->|getline| B(main.c: REPL)
-    B -->|raw string| C(parser.c: Tokenization)
-    C -->|array of tokens| D{executor.c: Command Type}
-    
+    A[End User] -->|Inputs Command via stdin| B(main.c: REPL)
+    B -->|Passes Raw String| C{parser.c: Tokenization}
+    C -->|Constructs Token Array| D[executor.c: Logic Router]
     D -- Built-in 'cd' or 'exit' --> E[Execute directly in Parent]
     E -->|chdir / terminate| B
-    
     D -- External System Command --> F[fork child process]
-    F --> G[Child: execvp replaces process image]
-    G --> H[Parent: wait for child to finish]
+    F --> G[Child: execvp replaces image]
+    G --> H[Parent: wait for child]
     H -->|Memory cleanup| B
-```
-📂 Repository Structure
-The project is modularized to separate the REPL, lexical analysis, and process execution:
-project/
-├── src/
-│   ├── executor.c     # Handles process forking and system calls
-│   ├── main.c         # Core Read-Evaluate-Print-Loop (REPL)
-│   ├── parser.c       # String tokenization and formatting
-│   └── shell.h        # Shared function prototypes and libraries
-├── test_dir/          # Sandbox directory for command testing
-├── Makefile           # Automated build configuration
-├── myshell            # Compiled executable
-└── README.md          # Project documentation
+    
+    classDef core fill:#A51C30,stroke:#333,stroke-width:2px,color:#fff;
+    classDef parser fill:#00599C,stroke:#333,stroke-width:2px,color:#fff;
+    classDef sys fill:#2b3137,stroke:#333,stroke-width:2px,color:#fff;
 
-📝 About the Components
-main.c: The entry point. Prints the myshell> prompt, fetches dynamic user input from stdin, and routes the data through the parser and executor.
-parser.c: Slices the raw input string into distinct, executable tokens using strtok, formatting the data exactly as required by the execvp system call.
-executor.c: The control center. It evaluates whether a command is built-in or external, handles the fork() cloning process, and synchronizes parent/child states.
-shell.h: The header file linking the architecture together, containing standard library includes and global function prototypes.
-Makefile: Automates compilation using gcc with strict flags (-Wall -Wextra) to enforce code quality.
-🚀 Local Setup & Execution
-To run myshell on your local POSIX-compliant machine (macOS/Linux), follow these steps:
-Clone the repository:
+    
+    class B core;
+    class C parser;
+    class D,E,F,G,H sys;
+```
+---
+
+## ✨ Key Features
+Dynamic Memory Allocation: Utilizes getline to dynamically allocate heap memory for user inputs of unpredictable lengths, bypassing rigid static array limitations.
+Process Cloning (Forking): Protects the main shell from terminating by using fork() to clone the current process before executing external commands.
+Process Image Replacement: Leverages execvp() to search the system's PATH and completely replace the child's memory image with the requested program.
+Built-in Command Interception: Bypasses standard child process isolation by intercepting cd and exit strings, routing them to run directly within the parent process using chdir().
+Strict Memory Safety: Implements rigorous free() routines on all dynamic buffers and token arrays to ensure zero memory leaks during execution and upon termination.
+Modular Architecture: Designed with independent .c files for distinct tasks (main loop, parsing, execution), allowing for high maintainability.
+Automated CI/CD: Integrated GitHub Actions workflow automatically compiles the codebase and verifies the binary status on every push.
+
+---
+
+## 🧰 Core Tech Stack
+Category	Technology / Tool	Version / Standard
+Language	C	C11 / POSIX.1-2008
+Compiler	GCC (GNU Compiler Collection)	-
+Build System	GNU Make	-
+Target Environment	macOS / Linux	POSIX-compliant
+Memory Management	Native C	malloc, free, getline
+DevOps & CI/CD	GitHub Actions	ubuntu-latest
+
+---
+
+## 📂 Repository Structure
+```text
+Plaintext
+.
+├── .github/
+│   └── workflows/
+│       └── ci.yml             # CI/CD Pipeline Configuration
+├── project/                   # Core Project Directory
+│   ├── src/                   # Source Code Files
+│   │   ├── executor.c         # Script: Process forking and system calls
+│   │   ├── main.c             # Script: Core REPL and input handling
+│   │   ├── parser.c           # Script: String tokenization logic
+│   │   └── shell.h            # Header: Function prototypes and includes
+│   ├── test_dir/              # Directory: Sandbox for command testing
+│   ├── Makefile               # Build Configuration
+│   ├── myshell                # Compiled Executable Binary
+│   └── README.md              # Project Documentation
+└── .gitignore                 # Ignored files (executables, object files)
+```
+(Reference: Internal File Structure)
+---
+
+## 💻 Local Setup & Execution
+Want to compile and run this custom shell on your own machine? Follow these steps:
+1. Clone the repository
+```bash
 git clone [https://github.com/HAMED-PAYANDA/myshell.git](https://github.com/HAMED-PAYANDA/myshell.git)
-cd myshell
-Compile the source code:
-Bash
+cd myshell/project
+```
+2. Compile the source code
+The custom Makefile is configured to compile the source files inside the src directory with strict warnings (-Wall, -Wextra).
+```bash
 make
-Execute the shell:
-Bash
+```
+3. Launch the Shell
+Execute the newly generated binary to enter the REPL:
+```bash
 ./myshell
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-👤 Author
-Hamed Payanda
-GitHub: @HAMED-PAYANDA
-Completed as part of the Harvard CS50x Capstone Project.
+```
+4. Test System Commands
+You can now interact with the shell just like your standard terminal. Try the following standard UNIX commands:
+```bash
+myshell> ls -l
+myshell> mkdir testing_directory
+myshell> cd src
+myshell> pwd
+myshell> exit
+```
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👤 Author
+
+**Hamed Payanda**
+* **GitHub:** [@HAMED-PAYANDA](https://github.com/HAMED-PAYANDA)
+* Completed as the **Capstone Project for the Harvard CS50x Program**.
+
+
+
+
+
