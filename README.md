@@ -24,7 +24,7 @@ Here is a look at the custom shell in action:
 *Demonstrates compilation via GNU Make, executing standard system commands, managing directories, and gracefully terminating without memory leaks.*[cite: 2]
 ![myshell Terminal Demonstration](demo1.png)
 
-#### Video Demo: <https://www.youtube.com/watch?v=pWYWXD3LPuw>
+### 2. Video Demo: <https://www.youtube.com/watch?v=pWYWXD3LPuw>
 
 ---
 
@@ -56,24 +56,26 @@ graph TD
 ---
 
 ## ✨ Key Features
-Dynamic Memory Allocation: Utilizes getline to dynamically allocate heap memory for user inputs of unpredictable lengths, bypassing rigid static array limitations.
-Process Cloning (Forking): Protects the main shell from terminating by using fork() to clone the current process before executing external commands.
-Process Image Replacement: Leverages execvp() to search the system's PATH and completely replace the child's memory image with the requested program.
-Built-in Command Interception: Bypasses standard child process isolation by intercepting cd and exit strings, routing them to run directly within the parent process using chdir().
-Strict Memory Safety: Implements rigorous free() routines on all dynamic buffers and token arrays to ensure zero memory leaks during execution and upon termination.
-Modular Architecture: Designed with independent .c files for distinct tasks (main loop, parsing, execution), allowing for high maintainability.
-Automated CI/CD: Integrated GitHub Actions workflow automatically compiles the codebase and verifies the binary status on every push.
+
+*   **Dynamic Memory Allocation:** Utilizes `getline` to dynamically allocate heap memory for user inputs of unpredictable lengths, bypassing rigid static array limitations.
+*   **Process Cloning (Forking):** Protects the main shell from terminating by using `fork()` to clone the current process before executing external commands.
+*   **Process Image Replacement:** Leverages `execvp()` to search the system's `PATH` and completely replace the child's memory image with the requested program.
+*   **Built-in Command Interception:** Bypasses standard child process isolation by intercepting `cd` and `exit` strings, routing them to run directly within the parent process using `chdir()`.
+*   **Strict Memory Safety:** Implements rigorous `free()` routines on all dynamic buffers and token arrays to ensure zero memory leaks during execution and upon termination.
+*   **Modular Architecture:** Designed with independent `.c` files for distinct tasks (main loop, parsing, execution), allowing for high maintainability.
+*   **Automated CI/CD:** Integrated GitHub Actions workflow automatically compiles the codebase and verifies the binary status on every push.
 
 ---
-
 ## 🧰 Core Tech Stack
-Category	Technology / Tool	Version / Standard
-Language	C	C11 / POSIX.1-2008
-Compiler	GCC (GNU Compiler Collection)	-
-Build System	GNU Make	-
-Target Environment	macOS / Linux	POSIX-compliant
-Memory Management	Native C	malloc, free, getline
-DevOps & CI/CD	GitHub Actions	ubuntu-latest
+
+| Category | Technology / Tool | Version / Standard |
+| :--- | :--- | :--- |
+| **Language** | C | `C11 / POSIX.1-2008` |
+| **Compiler** | GCC (GNU Compiler Collection) | - |
+| **Build System** | GNU Make | - |
+| **Target Environment** | macOS / Linux | POSIX-compliant |
+| **Memory Management** | Native C | `malloc`, `free`, `getline` |
+| **DevOps & CI/CD** | GitHub Actions | `ubuntu-latest` |
 
 ---
 
