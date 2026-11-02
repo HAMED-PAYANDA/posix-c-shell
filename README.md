@@ -98,7 +98,7 @@ Plaintext
 │   └── README.md              # Project Documentation
 └── .gitignore                 # Ignored files (executables, object files)
 ```
-(Reference: Internal File Structure)
+###### (Reference: Internal File Structure)
 ---
 
 ## 💻 Local Setup & Execution
